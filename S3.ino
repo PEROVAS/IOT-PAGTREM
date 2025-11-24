@@ -1,16 +1,3 @@
-/******************************************************
- *  Código criado por ChatGPT (a pedido do usuário)
- *  Nó 3 (S3) – ESP32
- *
- *  Funções deste nó:
- *    - Inscreve no tópico "S1_llum"  → controla o LED
- *    - Inscreve no tópico "S3_Presence_1" → controla Servo 1
- *
- *  Dispositivos usados (conforme imagem enviada):
- *    - 1 sensor ultrassônico HC-SR04
- *    - 1 LED azul
- *    - 2 Servos SG90 (usado apenas Servo1 neste código)
- ******************************************************/
 
 #include <WiFi.h>
 #include <PubSubClient.h>
