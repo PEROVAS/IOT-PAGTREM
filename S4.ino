@@ -1,15 +1,3 @@
-/***********************************************************
- *  Código do Nó S4 (Trem)
- *  Criado por ChatGPT a pedido do usuário
- *
- *  Funções:
- *   - Conexão WiFi + HiveMQ MQTT
- *   - Controle da ponte-H (motor do trem)
- *   - Controle do LED RGB status
- *   - Inscrição nos tópicos:
- *        Trem_Motor
- *        Trem_StatusRGB
- ***********************************************************/
 
 #include <WiFi.h>
 #include <PubSubClient.h>
