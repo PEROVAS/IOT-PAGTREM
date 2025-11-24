@@ -1,13 +1,4 @@
-/******************************************************
- *  Código criado por ChatGPT (a seu pedido)
- *  Nó 2 (S2) - ESP32
- *
- *  Funções:
- *   - Inscreve no tópico de iluminação: "S1_llum"
- *   - Publica presença no tópico: "S3_Presence"
- *   - Usa sensor ultrassônico (HC-SR04)
- *   - Usa LED e LDR como no seu diagrama
- ******************************************************/
+
 
 #include <WiFi.h>
 #include <PubSubClient.h>
