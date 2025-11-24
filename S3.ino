@@ -1,0 +1,104 @@
+/******************************************************
+ *  Código criado por ChatGPT (a pedido do usuário)
+ *  Nó 3 (S3) – ESP32
+ *
+ *  Funções deste nó:
+ *    - Inscreve no tópico "S1_llum"  → controla o LED
+ *    - Inscreve no tópico "S3_Presence_1" → controla Servo 1
+ *
+ *  Dispositivos usados (conforme imagem enviada):
+ *    - 1 sensor ultrassônico HC-SR04
+ *    - 1 LED azul
+ *    - 2 Servos SG90 (usado apenas Servo1 neste código)
+ ******************************************************/
+
+#include <WiFi.h>
+#include <PubSubClient.h>
+#include <Servo.h>
+
+/* ============================
+   CONFIGURAÇÕES DE REDE
+   ============================ */
+const char* ssid = "SEU_WIFI";
+const char* password = "SUA_SENHA";
+
+/* ============================
+   CONFIGURAÇÃO MQTT (HIVEMQ)
+   ============================ */
+const char* mqtt_server = "broker.hivemq.com";
+const int mqtt_port = 1883;
+
+WiFiClient espClient;
+PubSubClient client(espClient);
+
+/* ============================
+   PINOS DO LED E SERVOS
+   ============================ */
+#define LED_PIN 2
+#define SERVO1_PIN 15   // GPIO recomendado para servo
+
+Servo servo1;
+
+/* ============================
+   FUNÇÃO: Conectar ao WiFi
+   ============================ */
+void setup_wifi() {
+  Serial.println("Conectando ao WiFi...");
+  WiFi.begin(ssid, password);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.println("\nWiFi conectado!");
+  Serial.print("IP: ");
+  Serial.println(WiFi.localIP());
+}
+
+/* ==========================================================
+   CALLBACK MQTT
+   - Executada quando chega mensagem nos tópicos inscritos
+   ========================================================== */
+void callback(char* topic, byte* message, unsigned int length) {
+  String msg = "";
+
+  for (int i = 0; i < length; i++) {
+    msg += (char)message[i];
+  }
+
+  Serial.print("Mensagem recebida no tópico: ");
+  Serial.println(topic);
+  Serial.print("Conteúdo: ");
+  Serial.println(msg);
+
+  /* --------------------------------------------------
+     CONTROLE DE ILUMINAÇÃO (Tópico: S1_llum)
+     -------------------------------------------------- */
+  if (String(topic) == "S1_llum") {
+    if (msg == "1") {
+      digitalWrite(LED_PIN, HIGH);
+      Serial.println("LED LIGADO via MQTT");
+    } else {
+      digitalWrite(LED_PIN, LOW);
+      Serial.println("LED DESLIGADO via MQTT");
+    }
+  }
+
+  /* --------------------------------------------------
+     CONTROLE DO SERVO 1  (Tópico: S3_Presence_1)
+     -------------------------------------------------- */
+  if (String(topic) == "S3_Presence_1") {
+    int angulo = msg.toInt();  // converte texto para número
+
+    if (angulo >= 0 && angulo <= 180) {
+      servo1.write(angulo);
+      Serial.print("Servo1 movido para: ");
+      Serial.println(angulo);
+    } else {
+      Serial.println("Valor inválido para servo!");
+    }
+  }
+}
+
+/* ====================================*
