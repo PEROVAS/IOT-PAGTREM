@@ -14,7 +14,6 @@ const String Broker_PASS= "senhaplaca01";
 const String MyTopic = "";
 const String OtherTopic = "";
 
-
  void setup() {
   Serial.begin(115200);
   Serial.println("Conectando ao WiFI");
