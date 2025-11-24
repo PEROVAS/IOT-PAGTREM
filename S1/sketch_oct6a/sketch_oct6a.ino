@@ -16,7 +16,6 @@ const String OtherTopic = "";
 
 
 
-
  void setup() {
   Serial.begin(115200);
   Serial.println("Conectando ao WiFI");
