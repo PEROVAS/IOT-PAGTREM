@@ -36,7 +36,6 @@ const String OtherTopic = "";
   mqtt.subscribe(MyTopic.c_str());
   mqtt.setCallback(callback);
   Serial.println("\nCOnectado com sucesso ao broker!");
-
 }
 
 
