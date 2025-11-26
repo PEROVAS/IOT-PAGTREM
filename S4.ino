@@ -2,38 +2,38 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
 
-/* =============================
-   CONFIGURAÇÃO WIFI
-   ============================= */
+/* 
+   configuração de wifi
+    */
 const char* ssid = "SEU_WIFI";
 const char* password = "SUA_SENHA";
 
-/* =============================
-   CONFIGURAÇÃO MQTT (HIVEMQ)
-   ============================= */
+/* 
+   configuração mqtt (hivemq)
+    */
 const char* mqtt_server = "broker.hivemq.com";
 const int mqtt_port = 1883;
 
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-/* =============================
-   PINOS DA PONTE-H (motor trem)
-   ============================= */
+/* 
+   pinos da ponte h (motor trem)
+    */
 #define IN1 26     // controle direção A
 #define IN2 27     // controle direção B
 #define ENA 14     // controle velocidade (PWM)
 
-/* =============================
-   PINOS DO LED RGB STATUS
-   ============================= */
+/* 
+   pinos do led rgb status   
+*/
 #define LED_R 4
 #define LED_G 16
 #define LED_B 17
 
-/* =============================
-   FUNÇÃO DE CONEXÃO WIFI
-   ============================= */
+/* 
+   função conexão wifi
+    */
 void setup_wifi() {
   Serial.println("Conectando ao WiFi...");
   WiFi.begin(ssid, password);
@@ -48,10 +48,10 @@ void setup_wifi() {
   Serial.println(WiFi.localIP());
 }
 
-/* =====================================================
-   FUNÇÃO CALLBACK MQTT
-   -> Executa quando chega mensagem dos tópicos inscritos
-   ===================================================== */
+/* 
+   função callback mqtt
+    Executa quando chega mensagem dos tópicos inscritos
+    */
 void callback(char* topic, byte* msg, unsigned int length) {
   String message = "";
   for (int i = 0; i < length; i++) message += (char)msg[i];
@@ -61,14 +61,14 @@ void callback(char* topic, byte* msg, unsigned int length) {
   Serial.print("Conteúdo: ");
   Serial.println(message);
 
-  /* ----------------------------------------
-      CONTROLE DO MOTOR (Trem_Motor)
+  /* 
+      controle do motor (Trem_Motor)
       comandos possíveis:
        STOP
        FORWARD
        BACKWARD
        SPEED:XXX (0 a 255)
-     ---------------------------------------- */
+      */
   if (String(topic) == "Trem_Motor") {
 
     if (message == "STOP") {
@@ -100,14 +100,14 @@ void callback(char* topic, byte* msg, unsigned int length) {
     }
   }
 
-  /* ----------------------------------------
-      CONTROLE DO LED RGB (Trem_StatusRGB)
+  /* 
+      controle do led rgb (Trem_StatusRGB)
       Exemplo:
         RED
         GREEN
         BLUE
         OFF
-     ---------------------------------------- */
+      */
   if (String(topic) == "Trem_StatusRGB") {
 
     if (message == "RED") {
