@@ -3,32 +3,32 @@
 #include <PubSubClient.h>
 #include <Servo.h>
 
-/* ============================
-   CONFIGURAÇÕES DE REDE
-   ============================ */
+/* 
+   configurações de rede
+    */
 const char* ssid = "SEU_WIFI";
 const char* password = "SUA_SENHA";
 
-/* ============================
-   CONFIGURAÇÃO MQTT (HIVEMQ)
-   ============================ */
+/* 
+   configuração mqtt (hive mqtt)
+   */
 const char* mqtt_server = "broker.hivemq.com";
 const int mqtt_port = 1883;
 
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-/* ============================
-   PINOS DO LED E SERVOS
-   ============================ */
+/* 
+   pinos do led e servos
+*/
 #define LED_PIN 2
 #define SERVO1_PIN 15   // GPIO recomendado para servo
 
 Servo servo1;
 
-/* ============================
-   FUNÇÃO: Conectar ao WiFi
-   ============================ */
+/* 
+   função: Conectar ao WiFi
+    */
 void setup_wifi() {
   Serial.println("Conectando ao WiFi...");
   WiFi.begin(ssid, password);
@@ -43,10 +43,10 @@ void setup_wifi() {
   Serial.println(WiFi.localIP());
 }
 
-/* ==========================================================
-   CALLBACK MQTT
+/* 
+   callback mqtt
    - Executada quando chega mensagem nos tópicos inscritos
-   ========================================================== */
+    */
 void callback(char* topic, byte* message, unsigned int length) {
   String msg = "";
 
@@ -59,9 +59,9 @@ void callback(char* topic, byte* message, unsigned int length) {
   Serial.print("Conteúdo: ");
   Serial.println(msg);
 
-  /* --------------------------------------------------
-     CONTROLE DE ILUMINAÇÃO (Tópico: S1_llum)
-     -------------------------------------------------- */
+  /* 
+     controle de iluminação (Tópico: S1_llum)
+      */
   if (String(topic) == "S1_llum") {
     if (msg == "1") {
       digitalWrite(LED_PIN, HIGH);
@@ -72,9 +72,9 @@ void callback(char* topic, byte* message, unsigned int length) {
     }
   }
 
-  /* --------------------------------------------------
-     CONTROLE DO SERVO 1  (Tópico: S3_Presence_1)
-     -------------------------------------------------- */
+  /* 
+     controle do servo 1  (Tópico: S3_Presence_1)
+      */
   if (String(topic) == "S3_Presence_1") {
     int angulo = msg.toInt();  // converte texto para número
 
