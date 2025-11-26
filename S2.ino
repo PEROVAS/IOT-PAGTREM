@@ -2,17 +2,17 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
 
-/* ============================
-   CONFIGURAÇÕES DE REDE WI-FI
-   ============================ */
+/* 
+  configuraçõs de rede de wifi
+    */
 const char* ssid = "SEU_WIFI";          // nome da rede WiFi
 const char* password = "SENHA_WIFI";    // senha da rede WiFi
 
-/* ============================
+/* 
    CONFIGURAÇÕES MQTT (HIVEMQ)
    Broker público HiveMQ:
    broker.hivemq.com | porta 1883
-   ============================ */
+    */
 const char* mqtt_server = "broker.hivemq.com";
 const int mqtt_port = 1883;
 
@@ -20,21 +20,21 @@ const int mqtt_port = 1883;
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-/* ============================
-   PINOS DO SENSOR ULTRASSONICO
-   ============================ */
+/* 
+   pinos do sensor ultrasonico
+    */
 #define TRIG_PIN 5
 #define ECHO_PIN 18
 
-/* ============================
-   PINO DO LED DE ILUMINAÇÃO
+/* 
+   pino do led de iluminação
    (controlado pelo tópico MQTT)
-   ============================ */
+    */
 #define LED_PIN 2   // LED azul do seu diagrama
 
-/* ============================
-   FUNÇÃO: Conectar ao WiFi
-   ============================ */
+/* 
+   função: Conectar ao WiFi
+    */
 void setup_wifi() {
   delay(10);
   Serial.println("Conectando ao WiFi...");
@@ -51,11 +51,11 @@ void setup_wifi() {
   Serial.println(WiFi.localIP());
 }
 
-/* ==========================================================
-   FUNÇÃO CALLBACK MQTT
+/* 
+   função call back mqtt
    - Executada sempre que chega mensagem em um tópico inscrito
    - Aqui controlamos a ILUMINAÇÃO (LED)
-   ========================================================== */
+    */
 void callback(char* topic, byte* message, unsigned int length) {
   Serial.print("Mensagem recebida no tópico: ");
   Serial.println(topic);
